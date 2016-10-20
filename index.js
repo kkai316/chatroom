@@ -8,6 +8,12 @@ app.get('/', function(req, res){
 
 });
 
+/*app.get('/chatroom', function(req, res){
+  //res.sendFile(__dirname + '/index.html');
+  res.sendFile(__dirname + '/chat.html');
+
+});*/
+
 io.on('connection', function(socket){
   console.log('hello user!, a user connected');
   socket.broadcast.emit('everyone');
