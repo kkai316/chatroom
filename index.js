@@ -4,6 +4,8 @@ var io = require('socket.io')(http);
 
 app.get('/', function(req, res){
   //res.sendFile(__dirname + '/index.html');
+  console.log(res);
+  res.send('Username: ' + req.query['username']);
   res.sendFile(__dirname + '/main.html');
 
 });
