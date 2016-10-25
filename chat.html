@@ -36,7 +36,7 @@
       if(msg.name == person){
         $('#messages').append($('<li style="float: right; clear: right;">').text('' + msg.value));
       }else{
-        $('#messages').append($('<li>').text(msg.name + ' : ' + msg.value));
+        $('#messages').append($('<li style="clear: both;">').text(msg.name + ' : ' + msg.value));
 
       }
     });
