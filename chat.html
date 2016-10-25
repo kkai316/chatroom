@@ -24,25 +24,27 @@
   <script>
     var socket = io();
     var person = prompt("Please enter your name");
+    //form submit in chat
     $('form').submit(function(){
       //socket.emit('chat message', $('#m').val());
       socket.emit('chat message', { value: $('#m').val(), name: person }); 
       $('#m').val('');
       return false;
     });
-
+    //event chat message
     socket.on('chat message', function(msg){
-      $('#messages').append($('<li>').text(msg.name + ' : ' + msg.value));
+      if(msg.name == person){
+        $('#messages').append($('<li style="float: right; clear: right;">').text('' + msg.value));
+      }else{
+        $('#messages').append($('<li>').text(msg.name + ' : ' + msg.value));
+
+      }
     });
-
-    //socket.on('input_name', function(name){
-      //$('#messages').append($('<li>').text(msg));
-    //});
-
+    //leave notice
     socket.on('leave notice', function(){
       $('#messages').append($('<li>').text('someone is leaving'));
     });
-
+    //event on everyone
     socket.on('everyone', function(){
       $('#messages').append($('<li>').text('someone is connecting.....'));
     });

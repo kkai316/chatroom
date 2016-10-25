@@ -4,27 +4,21 @@ var io = require('socket.io')(http);
 
 app.get('/', function(req, res){
   //res.sendFile(__dirname + '/index.html');
-  console.log(res);
-  res.send('Username: ' + req.query['username']);
-  res.sendFile(__dirname + '/main.html');
+  //console.log(res);
+  //res.send('Username: ' + req.query['username']);
+  res.sendFile(__dirname + '/chat.html');
 
 });
 
-/*app.get('/chatroom', function(req, res){
+app.post('/', function(req, res){
   //res.sendFile(__dirname + '/index.html');
-  res.sendFile(__dirname + '/chat.html');
+  console.log(res.body);
 
-});*/
+});
 
 io.on('connection', function(socket){
   console.log('hello user!, a user connected');
   socket.broadcast.emit('everyone');
-
-  /*socket.on('input_name', function(name){
-    console.log('name: ' + name);
-    io.emit('input_name', name);
-  });*/
-  
   
   socket.on('chat message', function(msg){
     console.log('message: ' + msg);
@@ -36,9 +30,6 @@ io.on('connection', function(socket){
     io.emit('leave notice');
   });
 
-  /*socket.on('connection', function(){
-    io.emit('connect');
-  });*/
 
 });
 
