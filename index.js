@@ -26,8 +26,8 @@ io.on('connection', function(socket){
 
   //leave chatroom
   socket.on('disconnect', function(){
-    console.log('------user disconnected-----');
-    io.emit('leave notice');
+    console.log(socket.username + '------user disconnected-----');
+    io.emit('leave notice', {username: socket.username});
   });
 
 });

@@ -27,7 +27,7 @@
 
     //tell server
     socket.emit("new user",person);
-    
+
     //form submit in chat
     $('form').submit(function(){
       //socket.emit('chat message', $('#m').val());
@@ -39,22 +39,25 @@
     //event chat message
     socket.on('chat message', function(msg){
       if(msg.name == person){
-        $('#messages').append($('<li style="float: right; clear: right;">').text('' + msg.value));
+        $('#messages').append($('<li>').text('You : ' + msg.value));
       }else{
-        $('#messages').append($('<li style="clear: both;">').text(msg.name + ' : ' + msg.value));
+        $('#messages').append($('<li>').text(msg.name + ' : ' + msg.value));
 
       }
     });
 
     //leave notice
-    socket.on('leave notice', function(){
-      $('#messages').append($('<li>').text('someone is leaving'));
+    socket.on('leave notice', function(data){
+      $('#messages').append($('<li>').text(data.username+' is leaving'));
     });
 
     //event on join the chatroom
     socket.on('new user',function(data){
       $('#messages').append($('<li>').text(data.username + ' is join the chatroom'));    
     });
+
+    //detect typing
+    
 
 
   </script>
