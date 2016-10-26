@@ -24,6 +24,10 @@
   <script>
     var socket = io();
     var person = prompt("Please enter your name");
+
+    //tell server
+    socket.emit("new user",person);
+    
     //form submit in chat
     $('form').submit(function(){
       //socket.emit('chat message', $('#m').val());
@@ -31,6 +35,7 @@
       $('#m').val('');
       return false;
     });
+
     //event chat message
     socket.on('chat message', function(msg){
       if(msg.name == person){
@@ -40,13 +45,15 @@
 
       }
     });
+
     //leave notice
     socket.on('leave notice', function(){
       $('#messages').append($('<li>').text('someone is leaving'));
     });
-    //event on everyone
-    socket.on('everyone', function(){
-      $('#messages').append($('<li>').text('someone is connecting.....'));
+
+    //event on join the chatroom
+    socket.on('new user',function(data){
+      $('#messages').append($('<li>').text(data.username + ' is join the chatroom'));    
     });
 
 
