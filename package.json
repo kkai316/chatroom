@@ -10,6 +10,8 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.10.2",
+    "nodedev": "0.0.1",
+    "nodemon": "^1.11.0",
     "socket.io": "^1.5.0"
   }
 }

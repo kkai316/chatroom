@@ -30,6 +30,12 @@ io.on('connection', function(socket){
     io.emit('leave notice', {username: socket.username});
   });
 
+  //typing
+  socket.on('typing', function(msg){
+    console.log("i am typing");
+    io.emit('typing');
+  });
+
 });
 
 http.listen(3000, function(){
