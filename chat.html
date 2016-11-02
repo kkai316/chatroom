@@ -1,19 +1,21 @@
 <!doctype html>
 <html>
   <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    
     <title>Socket.IO chat</title>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; background:#F4F4F4;}
-      .chatForm {padding-top: 10px;}
-   /*   form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }*/
+      #chatForm {padding-top: 10px;}
+      form#chat { background: #000; padding: 3px; position: fixed; bottom: 0; display: inline-block;}
+      form#chat input { border: 0; padding: 10px; margin-right: .5%; display: inline-block;}
+      form#chat button { background: rgb(130, 224, 255); border: none; padding: 10px; display: inline-block;}
       .position {position: fixed; bottom: 0; right:30px; z-index:100; background-color: #37424a; color: #fff;}
-      .chatWindow {position: fixed; bottom: 0; right:500px; z-index:100; background-color: gray; color: #fff; width: 300px; height: 300px; display:none;}
+      .chatWindow {position: fixed; bottom: 0; right:300px; z-index:100; background-color: gray; color: #fff; width: 300px; height: 300px; display:none;}
+      .chatroom {position: fixed; bottom: 0; right:300px; z-index:110; border: 1px solid black; color: #fff; width: 300px; height: 300px; display:none; background-color: gray; color: #fff;}
       #messages { overflow: scroll; list-style-type: none; margin: 0; padding: 0; }
       #messages li { padding: 5px 10px; }
       /*#messages li:nth-child(odd) { background: #eee; }*/
@@ -28,47 +30,55 @@
 
     <div class="container chatWindow" id="chatWindow">
       <!-- enter info before chat -->
-    <form class="chatForm">
+   <form id="chatForm">
       <button type="button" class="close">&times;</button>
       <div class="form-group">
         <label for="username">Name:</label>
         <input type="text" class="form-control" id="username">
       </div>
-      <div class="form-group">
-        <label for="email">Email address:</label>
-        <input type="email" class="form-control" id="email">
-      </div>
-
       <button type="submit" class="btn btn-default">Submit</button>
     </form>
     <!-- end enter info -->
       
     </div>
     
+    <div class="chatroom">
+      <div><ul id="messages"></ul></div>
+      <div>
+        <form id="chat" action="">
+          <!--<input  autocomplete="off" /><button>Send</button>-->
+          <input id="m" type="text" class="form-control" placeholder="Search for snippets" />
+          <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
+        </form>
+      </div>  
+   </div>
 
-   <!-- <div><ul id="messages"></ul></div>
-    <div><form action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
-    </form></div>
--->
 
   </body>
     <script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
   <script>
   $(document).ready(function(){
+    //toggle when click chat btn
     $('#chatBtn').click(function(){
-       $('#chatWindow').toggle();
+       $('#chatWindow').show();
+       //$('.chatroom').toggle();
     });//end click chatBtn
-  });
 
+    //username form submit action
+    $('form#chatForm').submit(function(){
+      console.log($('#username').val());
+      //check if is empty
+      $('#chatWindow').hide();
+      $('.chatroom').show();
+      return false;
+    });
 
-
+  });//end ready
 
     var socket = io();
-    var person = prompt("Please enter your name");
-
     //tell server
+    var person = 'test';
     socket.emit("new user",person);
 
     //form submit in chat
@@ -100,41 +110,8 @@
       $('#messages').append($('<li>').text(data.username + ' joins the chatroom'));    
     });
 
-    //detect typing
-    var typing = false;
-    var time;
-     
 
- /*   $("#m").keypress(function(e){
-      //console.log("i am typing");
-      if(typing == false){
-        typing = true;
-        socket.emit("typing", true);
-       // time = setTimeout(timeoutFunction, 3000);
-        console.log("i am in typeeeee");
-      }else{
-        //clearTimeout(time);
-        typing = false;
-        console.log("Not typing....");
-      }
-     // socket.emit("typing");
-    });*/
 
-   // if(typeing == true){
-    //  socket.emit("typing", true);
-   // }else{
-      //nothing
-    //}
-
-  /*  function timeoutFunction(){
-      typing = false;
-      //socket.emit(noLongerTypingMessage);
-    }*/
-   
-    //event on join the chatroom
- /*   socket.on('typing',function(){
-      $('#typeMsg').show();    
-    });*/
 
 
   </script>
