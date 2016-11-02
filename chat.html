@@ -45,7 +45,7 @@
     <div class="chatroom">
       <div><ul id="messages"></ul></div>
       <div>
-        <form id="chat" action="">
+        <form id="chat">
           <!--<input  autocomplete="off" /><button>Send</button>-->
           <input id="m" type="text" class="form-control" placeholder="Search for snippets" />
           <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
@@ -58,7 +58,9 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
   <script>
+  var person;
   $(document).ready(function(){
+
     //toggle when click chat btn
     $('#chatBtn').click(function(){
        $('#chatWindow').show();
@@ -69,6 +71,7 @@
     $('form#chatForm').submit(function(){
       console.log($('#username').val());
       //check if is empty
+      var person = $('#username').val();
       $('#chatWindow').hide();
       $('.chatroom').show();
       return false;
@@ -76,28 +79,30 @@
 
   });//end ready
 
+   // var person;
     var socket = io();
     //tell server
-    var person = 'test';
+    
     socket.emit("new user",person);
 
     //form submit in chat
-    $('form').submit(function(){
+    $('form#chat').submit(function(){
       //socket.emit('chat message', $('#m').val());
-      socket.emit('chat message', { value: $('#m').val(), name: person }); 
+      socket.emit('chat message', { value: $('#m').val(), name: person });
+      console.log($('#m').val()); 
       $('#m').val('');
       return false;
     });
 
     //event chat message
     socket.on('chat message', function(msg){
-      if(msg.name == person){
-        $('#messages').append($('<li style="float:right;clear:both;"><span class="selfMsg">' + msg.value + '</span></li>'));
-      }else{
+     // if(msg.name == person){
+    //    $('#messages').append($('<li style="float:right;clear:both;"><span class="selfMsg">' + msg.value + '</span></li>'));
+    //  }else{
        // $('#messages').append($('<li style="display:inline; background-color: lightblue;">').text(msg.name + ' : ' + msg.value));
         $('#messages').append($('<li style="float:left;clear:both;">' + msg.name + ' : <span class="otherMsg">' + msg.value + '</span></li>'));
 
-      }
+     // }
     });
 
     //leave notice
